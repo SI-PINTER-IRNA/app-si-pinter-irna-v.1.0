@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SI-PINTER IRNA APPS</title>
+<meta name="theme-color" content="#1a5276">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1a5276;--blue2:#2980b9;--blue3:#d6eaf8;
+  --green:#27ae60;--green2:#d5f5e3;
+  --red:#e74c3c;--red2:#fadbd8;
+  --orange:#e67e22;--orange2:#fef9e7;
+  --purple:#8e44ad;--purple2:#e8daef;
+  --teal:#1abc9c;--teal2:#d1f2eb;
+  --gray:#ecf0f1;--dark:#2c3e50;--white:#fff;
+  --shadow:0 2px 10px rgba(0,0,0,.1);--radius:10px
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;min-height:100vh;font-size:14px}
+.hidden{display:none!important}
+button{cursor:pointer;font-family:inherit}
+#splash{position:fixed;inset:0;background:linear-gradient(135deg,#1a5276,#2980b9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity .5s}
+#splash.fade{opacity:0;pointer-events:none}
+.splash-logo{font-size:64px;margin-bottom:16px;animation:pulse 1.5s infinite}
+.splash-title{color:#fff;font-size:24px;font-weight:800;letter-spacing:1px;text-align:center}
+.splash-sub{color:rgba(255,255,255,.8);font-size:13px;margin-top:8px;text-align:center}
+.splash-bar{width:200px;height:4px;background:rgba(255,255,255,.2);border-radius:4px;margin-top:30px;overflow:hidden}
+.splash-progress{height:100%;background:#fff;border-radius:4px;animation:load 1.8s ease forwards}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+@keyframes load{from{width:0}to{width:100%}}
+#loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a5276,#154360);padding:16px}
+.login-wrap{width:100%;max-width:420px}
+.login-card{background:#fff;border-radius:20px;padding:40px 36px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.login-logo{text-align:center;margin-bottom:24px}
+.login-logo .icon{font-size:52px}
+.login-logo .name{font-size:20px;font-weight:800;color:var(--blue);margin-top:8px}
+.login-logo .tagline{font-size:11px;color:#888;margin-top:4px;line-height:1.5}
+.input-group{position:relative;margin-bottom:14px}
+.input-group .lbl{font-size:11px;font-weight:700;color:#666;margin-bottom:5px;display:block;text-transform:uppercase;letter-spacing:.5px}
+.input-group input{width:100%;padding:11px 14px 11px 40px;border:1.5px solid #e0e0e0;border-radius:9px;font-size:14px;outline:none;transition:.2s;background:#fafafa}
+.input-group input:focus{border-color:var(--blue2);background:#fff;box-shadow:0 0 0 3px rgba(41,128,185,.1)}
+.input-group .ico{position:absolute;left:12px;bottom:11px;font-size:16px}
+.login-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border:none;border-radius:9px;font-size:15px;font-weight:700;letter-spacing:.5px;transition:.2s;margin-top:6px}
+.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(26,82,118,.4)}
+.login-err{background:#fdecea;color:#c0392b;padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px;border-left:3px solid var(--red)}
+.login-footer{text-align:center;margin-top:20px;font-size:11px;color:#aaa}
+#topbar{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:0 16px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 3px 12px rgba(0,0,0,.2)}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-logo{font-size:22px}
+.tb-title{font-size:15px;font-weight:800;letter-spacing:.3px;line-height:1.2}
+.tb-sub{font-size:9px;opacity:.75}
+.tb-right{display:flex;align-items:center;gap:8px}
+.tb-badge{padding:5px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.tb-room{background:rgba(255,255,255,.2)}
+.tb-shift{background:var(--orange)}
+.tb-notify{position:relative;background:rgba(255,255,255,.15);border:none;color:#fff;width:34px;height:34px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center}
+.tb-notify .badge{position:absolute;top:-2px;right:-2px;background:var(--red);color:#fff;font-size:9px;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.logout-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600}
+.logout-btn:hover{background:rgba(255,255,255,.25)}
+#tabBar{background:#fff;display:flex;gap:2px;padding:8px 12px;box-shadow:0 2px 8px rgba(0,0,0,.06);overflow-x:auto;scrollbar-width:none}
+#tabBar::-webkit-scrollbar{display:none}
+.tab{padding:8px 14px;border-radius:8px;white-space:nowrap;font-size:12px;font-weight:600;color:#888;transition:.2s;border:none;background:none}
+.tab.active{background:var(--blue);color:#fff}
+.tab:hover:not(.active){background:var(--gray);color:var(--dark)}
+.page{padding:14px;max-width:1280px;margin:0 auto}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.card-header{padding:14px 16px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between}
+.card-header h3{font-size:14px;font-weight:700;color:var(--dark)}
+.card-body{padding:16px}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.stat{background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);text-align:center;border-top:3px solid transparent;transition:.2s}
+.stat:hover{transform:translateY(-2px)}
+.stat.s-total{border-color:var(--blue2)}.stat.s-isi{border-color:var(--red)}
+.stat.s-kosong{border-color:var(--green)}.stat.s-bor{border-color:var(--orange)}
+.stat.s-hist{border-color:var(--purple)}
+.stat .v{font-size:26px;font-weight:800}
+.stat.s-total .v{color:var(--blue2)}.stat.s-isi .v{color:var(--red)}
+.stat.s-kosong .v{color:var(--green)}.stat.s-bor .v{color:var(--orange)}
+.stat.s-hist .v{color:var(--purple)}
+.stat .l{font-size:10px;color:#888;margin-top:2px;font-weight:600}
+.bed-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin-bottom:16px}
+.bed{border-radius:9px;padding:8px 4px;text-align:center;border:2px solid transparent;transition:.15s;position:relative}
+.bed.kosong{background:var(--green2);border-color:#a9dfbf;color:#1e8449}
+.bed.isi{background:var(--red2);border-color:#f1948a;color:#922b21}
+.bed.kritis{background:#fde8e8;border-color:var(--red);animation:blink 1.5s infinite}
+.bed.kosong:hover{background:#a9dfbf;transform:scale(1.05)}
+.bed.isi:hover{background:#f5b7b1;transform:scale(1.05)}
+.bed .b-num{font-size:10px;font-weight:800}
+.bed .b-icon{font-size:17px;margin:2px 0}
+.bed .b-name{font-size:8.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:62px;margin:0 auto}
+.bed .b-cond{position:absolute;top:3px;right:3px;width:7px;height:7px;border-radius:50%}
+.cond-stabil{background:var(--green)}.cond-obs{background:var(--orange)}
+.cond-kritis{background:var(--red)}.cond-membaik{background:var(--blue2)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;display:flex;align-items:center;justify-content:center;padding:12px;backdrop-filter:blur(3px)}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:92vh;overflow-y:auto;box-shadow:0 25px 80px rgba(0,0,0,.35)}
+.modal-hdr{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:1}
+.modal-hdr h3{font-size:15px;font-weight:800;color:#fff}
+.close-x{background:rgba(255,255,255,.2);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:16px;line-height:1;display:flex;align-items:center;justify-content:center}
+.close-x:hover{background:rgba(255,255,255,.35)}
+.modal-body{padding:18px 20px}
+.section-sep{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--blue2);margin:14px 0 10px;padding-bottom:5px;border-bottom:2px solid var(--blue3)}
+.f-row{margin-bottom:12px}
+.f-row label{display:block;font-size:11px;font-weight:700;color:#555;margin-bottom:4px}
+.f-row input,.f-row select,.f-row textarea{width:100%;padding:9px 12px;border:1.5px solid #e0e0e0;border-radius:8px;font-size:13px;outline:none;transition:.2s;background:#fafafa}
+.f-row input:focus,.f-row select:focus,.f-row textarea:focus{border-color:var(--blue2);background:#fff;box-shadow:0 0 0 3px rgba(41,128,185,.1)}
+.f-row textarea{resize:vertical;min-height:68px}
+.f-row input[readonly]{background:#f5f5f5;color:#888}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.modal-ftr{padding:12px 20px;border-top:1px solid #eee;display:flex;gap:8px;justify-content:flex-end;background:#fafafa;border-radius:0 0 16px 16px;position:sticky;bottom:0}
+.btn{padding:9px 18px;border-radius:8px;border:none;font-size:13px;font-weight:700;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-blue{background:var(--blue);color:#fff}.btn-red{background:var(--red);color:#fff}
+.btn-gray{background:#bdc3c7;color:#fff}.btn-green{background:var(--green);color:#fff}
+.btn-orange{background:var(--orange);color:#fff}.btn-sm{padding:6px 12px;font-size:12px}
+.info-row{display:flex;padding:7px 0;border-bottom:1px solid #f5f5f5;align-items:flex-start}
+.info-row:last-child{border:none}
+.info-row .lbl{width:140px;flex-shrink:0;font-size:11px;color:#888;font-weight:600}
+.info-row .val{font-size:13px;font-weight:600;color:#333;flex:1;word-break:break-word}
+.cond-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.pill-stabil{background:var(--green2);color:#1e8449}.pill-obs{background:var(--orange2);color:#935116}
+.pill-kritis{background:var(--red2);color:#922b21}.pill-membaik{background:var(--blue3);color:#1a5276}
+.outcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.ob{padding:11px;border-radius:9px;border:2px solid transparent;font-size:12px;font-weight:700;transition:.2s}
+.ob:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.ob-1{background:var(--green2);color:#1e8449;border-color:#a9dfbf}
+.ob-2{background:var(--orange2);color:#935116;border-color:#f9c97a}
+.ob-3{background:var(--red2);color:#922b21;border-color:#f1948a}
+.ob-4{background:var(--purple2);color:#6c3483;border-color:#c39bd3}
+.ob-5{background:var(--teal2);color:#0e6655;border-color:#76d7c4}
+.shift-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.shift-tab{padding:9px 18px;border-radius:9px;border:2px solid #ddd;font-size:13px;font-weight:700;color:#666;transition:.2s;background:#fff}
+.shift-tab.active{border-color:var(--orange);background:var(--orange);color:#fff;box-shadow:0 4px 12px rgba(230,126,34,.3)}
+.tt-group{margin-bottom:14px}
+.tt-group-title{font-size:12px;font-weight:800;padding:8px 12px;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:6px}
+.ttg-red{background:var(--red2);color:#922b21}.ttg-orange{background:var(--orange2);color:#935116}
+.ttg-green{background:var(--green2);color:#1e8449}
+.tt-table{width:100%;border-collapse:collapse;background:#fff;border-radius:0 0 8px 8px;overflow:hidden;box-shadow:var(--shadow)}
+.tt-table th{background:#f8f9fa;font-size:11px;font-weight:700;padding:9px 12px;text-align:left;color:#555;border-bottom:1px solid #eee}
+.tt-table td{font-size:12px;padding:9px 12px;border-bottom:1px solid #f5f5f5;vertical-align:top}
+.tt-table tr:last-child td{border:none}
+.tt-table tr:hover td{background:#fafafa}
+.print-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.search-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.search-row input{flex:1;min-width:200px;padding:10px 14px;border:1.5px solid #e0e0e0;border-radius:9px;font-size:13px;outline:none}
+.search-row input:focus{border-color:var(--blue2)}
+.search-row select{padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:9px;font-size:13px;outline:none;background:#fff}
+.rw-card{background:#fff;border-radius:10px;padding:14px 16px;box-shadow:var(--shadow);margin-bottom:8px;border-left:4px solid #ddd;transition:.2s;cursor:pointer}
+.rw-card:hover{transform:translateX(3px);box-shadow:0 4px 15px rgba(0,0,0,.12)}
+.rw-s{border-left-color:var(--green)}.rw-a{border-left-color:var(--orange)}
+.rw-m{border-left-color:var(--red)}.rw-p{border-left-color:var(--purple)}
+.rw-r{border-left-color:var(--teal)}
+.rw-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px}
+.rw-name{font-size:14px;font-weight:700;color:var(--dark)}
+.rw-badge{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:800}
+.b-s{background:var(--green2);color:#1e8449}.b-a{background:var(--orange2);color:#935116}
+.b-m{background:var(--red2);color:#922b21}.b-p{background:var(--purple2);color:#6c3483}
+.b-r{background:var(--teal2);color:#0e6655}
+.rw-meta{font-size:11px;color:#888;line-height:1.7}
+.notif-panel{position:fixed;top:58px;right:10px;width:300px;background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.2);z-index:200;overflow:hidden}
+.notif-hdr{padding:12px 16px;background:var(--blue);color:#fff;font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.notif-list{max-height:320px;overflow-y:auto}
+.notif-item{padding:12px 16px;border-bottom:1px solid #f0f0f0;display:flex;gap:10px;align-items:flex-start}
+.notif-item:last-child{border:none}
+.notif-item .ni-icon{font-size:20px;flex-shrink:0}
+.notif-item .ni-text{font-size:12px;color:#333;line-height:1.5}
+.notif-item .ni-time{font-size:10px;color:#aaa;margin-top:2px}
+.lap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.lap-card{background:#fff;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.lap-card h4{font-size:12px;font-weight:800;color:var(--blue);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.lap-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
+.lap-row:last-child{border:none}
+.lap-val{font-weight:800;color:var(--dark)}
+.chart-bar-item{margin-bottom:8px}
+.chart-bar-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px}
+.chart-bar-track{background:#f0f0f0;border-radius:4px;height:8px;overflow:hidden}
+.chart-bar-fill{height:100%;border-radius:4px;transition:width .8s ease}
+.sync-bar{background:#eaf4fb;padding:8px 14px;display:flex;align-items:center;gap:8px;font-size:12px;color:#1a5276;border-bottom:1px solid #d4e6f1}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.sync-dot.syncing{background:var(--orange);animation:blink 1s infinite}
+.sync-dot.error{background:var(--red)}
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 22px;border-radius:10px;font-size:13px;font-weight:700;z-index:9999;opacity:0;transition:.3s;pointer-events:none;display:flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+#toast.success{background:#2c3e50;color:#fff}
+#toast.error{background:var(--red);color:#fff}
+#toast.info{background:var(--blue);color:#fff}
+.empty{text-align:center;padding:50px 20px;color:#ccc}
+.empty .e-icon{font-size:52px}
+.empty p{margin-top:12px;font-size:14px}
+@media print{#topbar,#tabBar,.print-bar,.shift-tabs,#toast,.overlay,#splash,#notifPanel{display:none!important}body{background:#fff}.page{padding:0}.tt-table{box-shadow:none}}
+@media(max-width:768px){.stats{grid-template-columns:repeat(3,1fr)}.bed-grid{grid-template-columns:repeat(5,1fr)}.g2,.g3{grid-template-columns:1fr}.lap-grid{grid-template-columns:1fr}.outcome-grid{grid-template-columns:1fr}.tb-title{font-size:13px}.tb-sub{display:none}}
+@media(max-width:480px){.stats{grid-template-columns:repeat(2,1fr)}.bed-grid{grid-template-columns:repeat(4,1fr)}.modal{max-width:100%;border-radius:12px}}
+</style>
+</head>
+<body>
+<div id="splash">
+  <div class="splash-logo">&#127973;</div>
+  <div class="splash-title">SI-PINTER IRNA APPS</div>
+  <div class="splash-sub">Sistem Pendokumentasian Terpadu IRNA</div>
+  <div class="splash-bar"><div class="splash-progress"></div></div>
+</div>
+<div id="loginPage" class="hidden">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="icon">&#127973;</div>
+        <div class="name">SI-PINTER IRNA APPS</div>
+        <div class="tagline">Sistem Pendokumentasian Terpadu IRNA<br>Instalasi Rawat Inap</div>
+      </div>
+      <div class="login-err hidden" id="loginErr">&#9888;&#65039; Username atau password salah!</div>
+      <div class="input-group"><label class="lbl">Username</label><span class="ico">&#128100;</span><input type="text" id="lu" placeholder="Masukkan username" autocomplete="username"/></div>
+      <div class="input-group"><label class="lbl">Password</label><span class="ico">&#128274;</span><input type="password" id="lp" placeholder="Masukkan password" autocomplete="current-password"/></div>
+      <button class="login-btn" onclick="doLogin()">&#128272; MASUK</button>
+      <div class="login-footer">SI-PINTER v2.0 &middot; Instalasi Rawat Inap</div>
+    </div>
+  </div>
+</div>
+<div id="app" class="hidden">
+  <div id="topbar">
+    <div class="tb-left"><span class="tb-logo">&#127973;</span><div><div class="tb-title">SI-PINTER IRNA</div><div class="tb-sub">Sistem Pendokumentasian Terpadu</div></div></div>
+    <div class="tb-right">
+      <span class="tb-badge tb-room" id="tbRoom">-</span>
+      <span class="tb-badge tb-shift" id="tbShift">-</span>
+      <button class="tb-notify" onclick="toggleNotif()" id="notifBtn">&#128276;<span class="badge hidden" id="notifCount">0</span></button>
+      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+  <div class="sync-bar" id="syncBar"><div class="sync-dot" id="syncDot"></div><span id="syncText">Data tersimpan lokal &middot; Konfigurasi Google Sheets di Pengaturan</span></div>
+  <div id="tabBar">
+    <button class="tab active" onclick="goTab('dashboard')">&#127968; Dashboard</button>
+    <button class="tab" onclick="goTab('timbang')">&#128260; Timbang Terima</button>
+    <button class="tab" onclick="goTab('riwayat')">&#128203; Riwayat</button>
+    <button class="tab" onclick="goTab('laporan')">&#128202; Laporan</button>
+    <button class="tab" onclick="goTab('pengaturan')">&#9881;&#65039; Pengaturan</button>
+  </div>
+  <div id="pg-dashboard" class="page">
+    <div class="stats" id="statsBar"></div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-header"><h3>&#128717; Denah Tempat Tidur &ndash; Kapasitas 40 Bed</h3>
+        <div style="display:flex;gap:8px;align-items:center;font-size:11px">
+          <span style="background:var(--green2);padding:3px 8px;border-radius:6px;color:#1e8449;font-weight:700">&#9679; Kosong</span>
+          <span style="background:var(--red2);padding:3px 8px;border-radius:6px;color:#922b21;font-weight:700">&#9679; Terisi</span>
+        </div>
+      </div>
+      <div class="card-body"><div class="bed-grid" id="bedGrid"></div></div>
+    </div>
+    <div id="kritisAlert" class="hidden card" style="border:2px solid var(--red);margin-bottom:14px">
+      <div class="card-header" style="background:var(--red2)"><h3 style="color:var(--red)">&#128680; Pasien Kondisi Kritis</h3></div>
+      <div class="card-body" id="kritisBody"></div>
+    </div>
+  </div>
+  <div id="pg-timbang" class="page hidden">
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-header"><h3>&#128260; Timbang Terima Antar Shift</h3><span style="font-size:11px;color:#888" id="ttDate"></span></div>
+      <div class="card-body">
+        <div class="shift-tabs">
+          <button class="shift-tab" onclick="setShift('Pagi',this)">&#9728;&#65039; Pagi (07.00&ndash;14.00)</button>
+          <button class="shift-tab" onclick="setShift('Siang',this)">&#127780;&#65039; Siang (14.00&ndash;21.00)</button>
+          <button class="shift-tab" onclick="setShift('Malam',this)">&#127769; Malam (21.00&ndash;07.00)</button>
+        </div>
+        <div class="print-bar">
+          <button class="btn btn-blue" onclick="printTT()">&#128424;&#65039; Cetak Laporan</button>
+          <button class="btn btn-green" onclick="exportTT()">&#128229; Export CSV</button>
+        </div>
+        <div id="ttContent"></div>
+      </div>
+    </div>
+  </div>
+  <div id="pg-riwayat" class="page hidden">
+    <div class="card">
+      <div class="card-header"><h3>&#128203; Riwayat Pasien</h3><span id="riwayatCount" style="font-size:12px;color:#888"></span></div>
+      <div class="card-body">
+        <div class="search-row">
+          <input type="text" id="srchQ" placeholder="&#128269; Cari nama, No. RM, diagnosa..." oninput="renderRiwayat()"/>
+          <select id="srchStatus" onchange="renderRiwayat()">
+            <option value="">Semua Status Keluar</option>
+            <option value="Sembuh/Pulang">&#9989; Sembuh / Pulang</option>
+            <option value="APS">&#128694; APS (Pulang Paksa)</option>
+            <option value="Meninggal">&#128367;&#65039; Meninggal</option>
+            <option value="Pindah Ruang">&#128256; Pindah Ruang</option>
+            <option value="Rujuk">&#127973; Rujuk RS Lain</option>
+          </select>
+          <input type="date" id="srchTgl" onchange="renderRiwayat()" style="padding:10px 12px;border:1.5px solid #e0e0e0;border-radius:9px;font-size:13px;outline:none"/>
+        </div>
+        <div id="riwayatList"></div>
+      </div>
+    </div>
+  </div>
+  <div id="pg-laporan" class="page hidden"><div id="laporanContent"></div></div>
+  <div id="pg-pengaturan" class="page hidden">
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-header"><h3>&#9881;&#65039; Pengaturan Aplikasi</h3></div>
+      <div class="card-body">
+        <div class="section-sep">&#128279; Sinkronisasi Google Sheets</div>
+        <div class="f-row"><label>URL Google Apps Script</label><input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/...../exec"/></div>
+        <div class="f-row"><label>ID Spreadsheet Google</label><input type="text" id="sheetId" placeholder="ID spreadsheet dari URL Google Sheets"/></div>
+        <button class="btn btn-blue" onclick="saveSettings()">&#128190; Simpan</button>
+        <button class="btn btn-green" style="margin-left:8px" onclick="testSync()">&#128260; Test Koneksi</button>
+        <div class="section-sep" style="margin-top:20px">&#128100; Data Perawat per Shift</div>
+        <div class="g2">
+          <div class="f-row"><label>Perawat Shift Pagi</label><input type="text" id="np_pagi" placeholder="Nama perawat"/></div>
+          <div class="f-row"><label>Perawat Shift Siang</label><input type="text" id="np_siang" placeholder="Nama perawat"/></div>
+        </div>
+        <div class="g2">
+          <div class="f-row"><label>Perawat Shift Malam</label><input type="text" id="np_malam" placeholder="Nama perawat"/></div>
+          <div class="f-row"><label>Kepala Ruang</label><input type="text" id="np_kaur" placeholder="Nama kepala ruang"/></div>
+        </div>
+        <button class="btn btn-blue" onclick="saveNurseSettings()">&#128190; Simpan Data Perawat</button>
+        <div class="section-sep" style="margin-top:20px">&#128465;&#65039; Manajemen Data</div>
+        <button class="btn btn-red" onclick="clearAllData()">&#9888;&#65039; Hapus Semua Data</button>
+        <div class="section-sep" style="margin-top:20px">&#128214; Panduan Akun Login</div>
+        <div style="font-size:13px;line-height:2;color:#555;background:#f8f9fa;padding:14px;border-radius:8px">
+          <b>IRNA CENDANA</b> &rarr; Username: irnacendana / Password: Cendana12<br>
+          <b>IRNA NUSA INDAH</b> &rarr; Username: irnanusaindah / Password: Nusaindah1<br>
+          <b>IRNA FLAMBOYAN</b> &rarr; Username: irnaflamboyan / Password: Flamboyan123
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="notifPanel" class="notif-panel hidden">
+  <div class="notif-hdr">&#128276; Notifikasi<button onclick="clearNotif()" style="background:rgba(255,255,255,.2);border:none;color:#fff;padding:3px 8px;border-radius:6px;font-size:11px;cursor:pointer">Hapus</button></div>
+  <div class="notif-list" id="notifList"></div>
+</div>
+<div class="overlay hidden" id="mPatient">
+  <div class="modal">
+    <div class="modal-hdr" style="background:linear-gradient(135deg,var(--blue),var(--blue2))"><h3 id="mPatientTitle">Tambah Pasien</h3><button class="close-x" onclick="closeM('mPatient')">&#10005;</button></div>
+    <div class="modal-body">
+      <div class="section-sep">&#128203; Identitas Pasien</div>
+      <div class="g2"><div class="f-row"><label>No. RM *</label><input id="fp_rm" placeholder="Contoh: 00123456"/></div><div class="f-row"><label>No. Bed</label><input id="fp_bed" readonly/></div></div>
+      <div class="f-row"><label>Nama Lengkap *</label><input id="fp_nama" placeholder="Sesuai identitas"/></div>
+      <div class="g3">
+        <div class="f-row"><label>Tgl Lahir</label><input type="date" id="fp_lahir"/></div>
+        <div class="f-row"><label>Jenis Kelamin</label><select id="fp_jk"><option>Laki-laki</option><option>Perempuan</option></select></div>
+        <div class="f-row"><label>Gol. Darah</label><select id="fp_gol"><option value="">-</option><option>A</option><option>B</option><option>AB</option><option>O</option></select></div>
+      </div>
+      <div class="f-row"><label>Alamat</label><input id="fp_alamat" placeholder="Alamat pasien"/></div>
+      <div class="g2">
+        <div class="f-row"><label>No. Telp / Keluarga</label><input id="fp_telp" placeholder="08xxxxxxxx"/></div>
+        <div class="f-row"><label>Pembayaran</label><select id="fp_bayar"><option>BPJS</option><option>Umum</option><option>Asuransi Swasta</option><option>Gratis</option></select></div>
+      </div>
+      <div class="section-sep">&#127973; Data Perawatan</div>
+      <div class="g3">
+        <div class="f-row"><label>Tgl MRS</label><input type="date" id="fp_mrs"/></div>
+        <div class="f-row"><label>Jam MRS</label><input type="time" id="fp_jam"/></div>
+        <div class="f-row"><label>Shift Masuk</label><select id="fp_shift"><option>Pagi</option><option>Siang</option><option>Malam</option></select></div>
+      </div>
+      <div class="f-row"><label>Diagnosa Medis *</label><input id="fp_dx" placeholder="Diagnosa utama"/></div>
+      <div class="g2">
+        <div class="f-row"><label>DPJP</label><input id="fp_dpjp" placeholder="Nama dokter"/></div>
+        <div class="f-row"><label>Kondisi Saat Ini</label><select id="fp_cond"><option>Stabil</option><option>Observasi</option><option>Kritis</option><option>Membaik</option></select></div>
+      </div>
+      <div class="section-sep">&#128221; Dokumentasi Keperawatan</div>
+      <div class="f-row"><label>Catatan Keperawatan (SOAP)</label><textarea id="fp_soap" placeholder="S: Subjektif&#10;O: Objektif&#10;A: Analisa&#10;P: Planning"></textarea></div>
+      <div class="f-row"><label>Tindakan / Terapi / Obat</label><textarea id="fp_tx" placeholder="Infus, injeksi, obat oral, tindakan..."></textarea></div>
+      <div class="g2">
+        <div class="f-row"><label>Diet &amp; Nutrisi</label><input id="fp_diet" placeholder="Contoh: DM 1700 kkal"/></div>
+        <div class="f-row"><label>Alergi</label><input id="fp_alergi" placeholder="Obat/makanan alergi"/></div>
+      </div>
+      <div class="f-row"><label>Catatan Khusus</label><textarea id="fp_extra" placeholder="Hal khusus yang perlu diperhatikan..." style="min-height:50px"></textarea></div>
+    </div>
+    <div class="modal-ftr"><button class="btn btn-gray" onclick="closeM('mPatient')">Batal</button><button class="btn btn-blue" onclick="savePatient()">&#128190; Simpan Data</button></div>
+  </div>
+</div>
+<div class="overlay hidden" id="mInfo">
+  <div class="modal">
+    <div class="modal-hdr" style="background:linear-gradient(135deg,#1e8449,#27ae60)"><h3>&#128203; Data Pasien</h3><button class="close-x" onclick="closeM('mInfo')">&#10005;</button></div>
+    <div class="modal-body" id="mInfoBody"></div>
+    <div class="modal-ftr"><button class="btn btn-gray" onclick="closeM('mInfo')">Tutup</button><button class="btn btn-orange" onclick="openOutcomeModal()">&#128228; Status Keluar</button><button class="btn btn-blue" onclick="editPatient()">&#9999;&#65039; Edit</button></div>
+  </div>
+</div>
+<div class="overlay hidden" id="mOutcome">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-hdr" style="background:linear-gradient(135deg,var(--dark),#566573)"><h3>&#128228; Status Keluar Pasien</h3><button class="close-x" onclick="closeM('mOutcome')">&#10005;</button></div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:#555;margin-bottom:14px">Pilih status keluar untuk <strong id="ocName"></strong> (Bed <span id="ocBed"></span>):</p>
+      <div class="outcome-grid">
+        <button class="ob ob-1" onclick="setOutcome('Sembuh/Pulang')">&#9989; Sembuh / Pulang</button>
+        <button class="ob ob-2" onclick="setOutcome('APS')">&#128694; APS (Pulang Paksa)</button>
+        <button class="ob ob-3" onclick="setOutcome('Meninggal')">&#128367;&#65039; Meninggal</button>
+        <button class="ob ob-4" onclick="setOutcome('Pindah Ruang')">&#128256; Pindah Ruang</button>
+        <button class="ob ob-5" onclick="setOutcome('Rujuk')">&#127973; Rujuk RS Lain</button>
+      </div>
+      <div class="f-row"><label>Catatan Keluar</label><textarea id="ocNote" placeholder="Catatan tambahan..." style="min-height:50px"></textarea></div>
+      <div class="g2">
+        <div class="f-row"><label>Tgl Keluar</label><input type="date" id="ocTgl"/></div>
+        <div class="f-row"><label>Jam Keluar</label><input type="time" id="ocJam"/></div>
+      </div>
+    </div>
+    <div class="modal-ftr"><button class="btn btn-gray" onclick="closeM('mOutcome')">Batal</button></div>
+  </div>
+</div>
+<div class="overlay hidden" id="mRiwayat">
+  <div class="modal">
+    <div class="modal-hdr" style="background:linear-gradient(135deg,var(--purple),#9b59b6)"><h3>&#128203; Detail Riwayat Pasien</h3><button class="close-x" onclick="closeM('mRiwayat')">&#10005;</button></div>
+    <div class="modal-body" id="mRiwayatBody"></div>
+    <div class="modal-ftr"><button class="btn btn-gray" onclick="closeM('mRiwayat')">Tutup</button><button class="btn btn-blue" onclick="readmitPatient()">&#128260; Rawat Inap Lagi</button></div>
+  </div>
+</div>
+<div id="toast"></div>
+<script>
+const ACCOUNTS={irnacendana:{pass:'Cendana12',room:'IRNA CENDANA'},irnanusaindah:{pass:'Nusaindah1',room:'IRNA NUSA INDAH'},irnaflamboyan:{pass:'Flamboyan123',room:'IRNA FLAMBOYAN'}};
+const TOTAL=40;
+let S={user:null,room:null,shift:'Pagi',beds:{},history:[],notifs:[],settings:{gasUrl:'',sheetId:'',np_pagi:'',np_siang:'',np_malam:'',np_kaur:''},editBed:null,viewBed:null,outcBed:null,viewHist:null};
+function persist(){try{localStorage.setItem('sip_'+S.user,JSON.stringify({beds:S.beds,history:S.history,notifs:S.notifs}));localStorage.setItem('sip_settings',JSON.stringify(S.settings));}catch(e){}}
+function hydrate(){try{const d=localStorage.getItem('sip_'+S.user);if(d){const p=JSON.parse(d);S.beds=p.beds||{};S.history=p.history||[];S.notifs=p.notifs||[];}else{S.beds={};S.history=[];S.notifs=[];}const c=localStorage.getItem('sip_settings');if(c)S.settings=Object.assign(S.settings,JSON.parse(c));}catch(e){S.beds={};S.history=[];S.notifs=[];}}
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('splash').classList.add('fade');setTimeout(()=>{document.getElementById('splash').classList.add('hidden');document.getElementById('loginPage').classList.remove('hidden');},500);},2000);});
+function doLogin(){const u=document.getElementById('lu').value.trim().toLowerCase();const p=document.getElementById('lp').value.trim();const err=document.getElementById('loginErr');if(ACCOUNTS[u]&&ACCOUNTS[u].pass===p){err.classList.add('hidden');S.user=u;S.room=ACCOUNTS[u].room;hydrate();autoShift();document.getElementById('loginPage').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('tbRoom').textContent=S.room;updateShiftBadge();applySettings();renderDashboard();checkKritis();toast('Selamat datang di '+S.room,'success');}else{err.classList.remove('hidden');document.getElementById('lp').value='';}}
+function doLogout(){persist();S.user=null;S.room=null;document.getElementById('app').classList.add('hidden');document.getElementById('loginPage').classList.remove('hidden');document.getElementById('lu').value='';document.getElementById('lp').value='';goTab('dashboard');}
+function autoShift(){const h=new Date().getHours();S.shift=h>=7&&h<14?'Pagi':h>=14&&h<21?'Siang':'Malam';document.querySelectorAll('.shift-tab').forEach((el,i)=>{const s=['Pagi','Siang','Malam'][i];el.classList.toggle('active',s===S.shift);});}
+function updateShiftBadge(){const ic={Pagi:'☀️',Siang:'🌤️',Malam:'🌙'};document.getElementById('tbShift').textContent=ic[S.shift]+' Shift '+S.shift;}
+const PAGES=['dashboard','timbang','riwayat','laporan','pengaturan'];
+function goTab(t){PAGES.forEach(p=>{const el=document.getElementById('pg-'+p);if(el)el.classList.toggle('hidden',p!==t);});document.querySelectorAll('.tab').forEach((el,i)=>{el.classList.toggle('active',PAGES[i]===t);});if(t==='dashboard')renderDashboard();if(t==='timbang')renderTT();if(t==='riwayat')renderRiwayat();if(t==='laporan')renderLaporan();if(t==='pengaturan')loadSettings();}
+function renderDashboard(){const pts=Object.values(S.beds).filter(Boolean);const isi=pts.length,kosong=TOTAL-isi,bor=TOTAL>0?Math.round(isi/TOTAL*100):0;document.getElementById('statsBar').innerHTML='<div class="stat s-total"><div class="v">'+TOTAL+'</div><div class="l">Total Bed</div></div><div class="stat s-isi"><div class="v">'+isi+'</div><div class="l">Bed Terisi</div></div><div class="stat s-kosong"><div class="v">'+kosong+'</div><div class="l">Bed Kosong</div></div><div class="stat s-bor"><div class="v">'+bor+'%</div><div class="l">BOR</div></div><div class="stat s-hist"><div class="v">'+S.history.length+'</div><div class="l">Total Riwayat</div></div>';let html='';for(let i=1;i<=TOTAL;i++){const p=S.beds[i];if(p){const cc={Stabil:'cond-stabil',Observasi:'cond-obs',Kritis:'cond-kritis',Membaik:'cond-membaik'}[p.kondisi]||'cond-stabil';const cls=p.kondisi==='Kritis'?'bed isi kritis':'bed isi';html+='<div class="'+cls+'" onclick="viewPatient('+i+')" title="'+p.nama+'"><div class="b-cond '+cc+'"></div><div class="b-num">Bed '+i+'</div><div class="b-icon">🛏️</div><div class="b-name">'+p.nama+'</div></div>';}else{html+='<div class="bed kosong" onclick="openAdd('+i+')" title="Bed '+i+' - Kosong"><div class="b-num">Bed '+i+'</div><div class="b-icon">➕</div><div class="b-name">Kosong</div></div>';}}document.getElementById('bedGrid').innerHTML=html;checkKritis();updateNotifBadge();}
+function checkKritis(){const kritis=Object.values(S.beds).filter(p=>p&&p.kondisi==='Kritis');const el=document.getElementById('kritisAlert');if(kritis.length){el.classList.remove('hidden');document.getElementById('kritisBody').innerHTML=kritis.map(p=>'<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #fde;font-size:13px"><div><b>Bed '+p.bed+' - '+p.nama+'</b><br><small style="color:#888">'+p.dx+' | DPJP: '+(p.dpjp||'-')+'</small></div><button class="btn btn-sm btn-blue" onclick="viewPatient('+p.bed+')">Lihat</button></div>').join('');}else el.classList.add('hidden');}
+function openAdd(bed){S.editBed=bed;document.getElementById('mPatientTitle').textContent='Tambah Pasien - Bed '+bed;clearForm();document.getElementById('fp_bed').value=bed;document.getElementById('fp_mrs').value=today();document.getElementById('fp_jam').value=nowTime();document.getElementById('fp_shift').value=S.shift;showM('mPatient');}
+function editPatient(){closeM('mInfo');const bed=S.viewBed;const p=S.beds[bed];if(!p)return;S.editBed=bed;document.getElementById('mPatientTitle').textContent='Edit Pasien - Bed '+bed;document.getElementById('fp_bed').value=bed;['rm','nama','lahir','alamat','telp','mrs','dx','dpjp','soap','tx','diet','alergi','extra'].forEach(k=>{const el=document.getElementById('fp_'+k);if(el)el.value=p[k]||'';});setF('fp_jk',p.jk);setF('fp_gol',p.gol||'');setF('fp_bayar',p.bayar);setF('fp_jam',p.jam);setF('fp_shift',p.shift);setF('fp_cond',p.kondisi);showM('mPatient');}
+function savePatient(){const rm=gF('fp_rm').trim(),nama=gF('fp_nama').trim(),dx=gF('fp_dx').trim();if(!rm){toast('No. RM wajib diisi!','error');return;}if(!nama){toast('Nama pasien wajib diisi!','error');return;}if(!dx){toast('Diagnosa wajib diisi!','error');return;}const bed=S.editBed;S.beds[bed]={bed,rm,nama,lahir:gF('fp_lahir'),jk:gF('fp_jk'),gol:gF('fp_gol'),alamat:gF('fp_alamat'),telp:gF('fp_telp'),bayar:gF('fp_bayar'),mrs:gF('fp_mrs'),jam:gF('fp_jam'),shift:gF('fp_shift'),dx,dpjp:gF('fp_dpjp'),kondisi:gF('fp_cond'),soap:gF('fp_soap'),tx:gF('fp_tx'),diet:gF('fp_diet'),alergi:gF('fp_alergi'),extra:gF('fp_extra'),ruangan:S.room,ts:new Date().toISOString()};persist();if(S.settings.gasUrl)syncToSheets('SAVE',S.beds[bed]);closeM('mPatient');renderDashboard();addNotif('Data pasien disimpan','Bed '+bed+' - '+nama+' ('+dx+')');toast('Data pasien '+nama+' berhasil disimpan!','success');}
+function clearForm(){['fp_rm','fp_nama','fp_lahir','fp_alamat','fp_telp','fp_mrs','fp_jam','fp_dx','fp_dpjp','fp_soap','fp_tx','fp_diet','fp_alergi','fp_extra'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});setF('fp_jk','Laki-laki');setF('fp_bayar','BPJS');setF('fp_cond','Stabil');setF('fp_gol','');}
+function viewPatient(bed){S.viewBed=bed;const p=S.beds[bed];if(!p)return;const age=p.lahir?Math.floor((new Date()-new Date(p.lahir))/31557600000)+' tahun':'-';const mrs=p.mrs?new Date(p.mrs).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}):'-';const los=p.mrs?Math.floor((new Date()-new Date(p.mrs))/86400000)+' hari':'-';const cpMap={Stabil:'pill-stabil',Observasi:'pill-obs',Kritis:'pill-kritis',Membaik:'pill-membaik'};const cp=cpMap[p.kondisi]||'pill-stabil';document.getElementById('mInfoBody').innerHTML='<div style="background:var(--blue3);border-radius:9px;padding:12px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:18px;font-weight:800;color:var(--blue)">'+p.nama+'</div><div style="font-size:12px;color:#666">No. RM: '+p.rm+' | Bed '+p.bed+' | '+p.jk+', '+age+'</div></div><span class="cond-pill '+cp+'">'+p.kondisi+'</span></div>'+infoRow('No. RM',p.rm)+infoRow('Nama',p.nama)+infoRow('Tgl Lahir',p.lahir?new Date(p.lahir).toLocaleDateString('id-ID'):'-')+infoRow('Usia',age)+infoRow('Jenis Kelamin',p.jk)+infoRow('Gol. Darah',p.gol||'-')+infoRow('Alamat',p.alamat||'-')+infoRow('No. Telp',p.telp||'-')+infoRow('Pembayaran',p.bayar)+'<div class="section-sep">Perawatan</div>'+infoRow('Tgl MRS',mrs)+infoRow('Jam MRS',p.jam||'-')+infoRow('Shift Masuk',p.shift)+infoRow('Lama Rawat',los)+infoRow('Diagnosa',p.dx)+infoRow('DPJP',p.dpjp||'-')+(p.alergi?infoRow('⚠️ Alergi','<span style="color:var(--red);font-weight:800">'+p.alergi+'</span>'):'')+( p.soap?'<div class="section-sep">Catatan SOAP</div><div style="font-size:12px;color:#444;white-space:pre-wrap;line-height:1.7;background:#fafafa;padding:10px;border-radius:8px">'+p.soap+'</div>':'')+(p.tx?'<div class="section-sep">Tindakan / Terapi</div><div style="font-size:12px;white-space:pre-wrap;background:#fafafa;padding:10px;border-radius:8px">'+p.tx+'</div>':'')+(p.diet?infoRow('Diet',p.diet):'')+(p.extra?'<div class="section-sep">Catatan Khusus</div><div style="font-size:12px;background:#fff8e1;padding:10px;border-radius:8px;border-left:3px solid var(--orange)">'+p.extra+'</div>':'');showM('mInfo');}
+function infoRow(l,v){return'<div class="info-row"><div class="lbl">'+l+'</div><div class="val">'+(v||'-')+'</div></div>';}
+function openOutcomeModal(){S.outcBed=S.viewBed;const p=S.beds[S.outcBed];if(!p)return;document.getElementById('ocName').textContent=p.nama;document.getElementById('ocBed').textContent=S.outcBed;document.getElementById('ocNote').value='';document.getElementById('ocTgl').value=today();document.getElementById('ocJam').value=nowTime();closeM('mInfo');showM('mOutcome');}
+function setOutcome(status){const bed=S.outcBed;const p=S.beds[bed];if(!p)return;const rec={...p,status_keluar:status,catatan_keluar:document.getElementById('ocNote').value,tgl_keluar:document.getElementById('ocTgl').value,jam_keluar:document.getElementById('ocJam').value,discharged_at:new Date().toISOString()};S.history.unshift(rec);S.beds[bed]=null;persist();if(S.settings.gasUrl)syncToSheets('DISCHARGE',rec);closeM('mOutcome');renderDashboard();addNotif('Pasien Keluar','Bed '+bed+' - '+p.nama+' ('+status+')');toast(p.nama+' - '+status,'success');}
+function setShift(s,el){S.shift=s;updateShiftBadge();document.querySelectorAll('.shift-tab').forEach(e=>e.classList.remove('active'));el.classList.add('active');renderTT();}
+function renderTT(){document.getElementById('ttDate').textContent=new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});const pts=Object.values(S.beds).filter(Boolean);if(!pts.length){document.getElementById('ttContent').innerHTML='<div class="empty"><div class="e-icon">🛏️</div><p>Tidak ada pasien dirawat saat ini</p></div>';return;}const kritis=pts.filter(p=>p.kondisi==='Kritis');const obs=pts.filter(p=>p.kondisi==='Observasi');const lain=pts.filter(p=>p.kondisi==='Stabil'||p.kondisi==='Membaik');let html='';if(kritis.length)html+=ttGroup('🔴 Kondisi Kritis','ttg-red',kritis);if(obs.length)html+=ttGroup('🟡 Observasi','ttg-orange',obs);if(lain.length)html+=ttGroup('🟢 Stabil / Membaik','ttg-green',lain);html+='<div style="margin-top:16px;padding:14px;background:#f8f9fa;border-radius:9px;font-size:12px;color:#666"><b>Perawat Shift '+S.shift+':</b> '+(S.settings['np_'+S.shift.toLowerCase()]||'_________________')+'&nbsp;|&nbsp;<b>Kepala Ruang:</b> '+(S.settings.np_kaur||'_________________')+'&nbsp;|&nbsp;<b>Tanda Tangan:</b> _________________</div>';document.getElementById('ttContent').innerHTML=html;}
+function ttGroup(title,cls,pts){const rows=pts.map(p=>{const mrs=p.mrs?new Date(p.mrs).toLocaleDateString('id-ID'):'-';const los=p.mrs?Math.floor((new Date()-new Date(p.mrs))/86400000)+' hr':'-';return'<tr><td><b>Bed '+p.bed+'</b></td><td><b>'+p.nama+'</b><br><small style="color:#888">'+p.rm+'</small></td><td>'+p.dx+'</td><td>'+(p.dpjp||'-')+'</td><td>'+mrs+'<br><small>LOS: '+los+'</small></td><td>'+p.bayar+'</td><td>'+p.kondisi+'</td><td style="max-width:180px;font-size:11px">'+((p.soap||'').substring(0,80))+((p.soap||'').length>80?'...':'')+'</td></tr>';}).join('');return'<div class="tt-group"><div class="tt-group-title '+cls+'">'+title+' ('+pts.length+' pasien)</div><table class="tt-table"><tr><th>Bed</th><th>Pasien</th><th>Diagnosa</th><th>DPJP</th><th>MRS</th><th>Bayar</th><th>Kondisi</th><th>Catatan</th></tr>'+rows+'</table></div>';}
+function printTT(){window.print();}
+function exportTT(){const pts=Object.values(S.beds).filter(Boolean);if(!pts.length){toast('Tidak ada pasien','error');return;}const hdr=['Bed','No.RM','Nama','Diagnosa','DPJP','Tgl MRS','LOS','Kondisi','Pembayaran'];const rows=pts.map(p=>{const los=p.mrs?Math.floor((new Date()-new Date(p.mrs))/86400000)+' hari':'-';return[p.bed,p.rm,p.nama,p.dx,p.dpjp||'',p.mrs||'',los,p.kondisi,p.bayar];});const csv=[hdr,...rows].map(r=>r.map(c=>'"'+c+'"').join(',')).join('
+');const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,﻿'+encodeURIComponent(csv);a.download='TimbangTerima_'+today()+'.csv';a.click();toast('CSV berhasil di-download','success');}
+function renderRiwayat(){const q=(document.getElementById('srchQ').value||'').toLowerCase();const fs=document.getElementById('srchStatus').value;const fd=document.getElementById('srchTgl').value;let list=S.history.filter(p=>{const mq=!q||(p.nama||'').toLowerCase().includes(q)||(p.rm||'').toLowerCase().includes(q)||(p.dx||'').toLowerCase().includes(q);const mf=!fs||p.status_keluar===fs;const md=!fd||p.tgl_keluar===fd;return mq&&mf&&md;});document.getElementById('riwayatCount').textContent=list.length+' data';if(!list.length){document.getElementById('riwayatList').innerHTML='<div class="empty"><div class="e-icon">📋</div><p>Belum ada riwayat</p></div>';return;}const scMap={'Sembuh/Pulang':'rw-s','APS':'rw-a','Meninggal':'rw-m','Pindah Ruang':'rw-p','Rujuk':'rw-r'};const bcMap={'Sembuh/Pulang':'b-s','APS':'b-a','Meninggal':'b-m','Pindah Ruang':'b-p','Rujuk':'b-r'};const icMap={'Sembuh/Pulang':'✅','APS':'🚶','Meninggal':'🕯️','Pindah Ruang':'🔀','Rujuk':'🏥'};document.getElementById('riwayatList').innerHTML=list.map((p,i)=>{const sc=scMap[p.status_keluar]||'';const bc=bcMap[p.status_keluar]||'';const ic=icMap[p.status_keluar]||'';const mrs=p.mrs?new Date(p.mrs).toLocaleDateString('id-ID'):'-';const keluar=p.tgl_keluar?new Date(p.tgl_keluar).toLocaleDateString('id-ID'):'-';const los=p.mrs&&p.tgl_keluar?Math.floor((new Date(p.tgl_keluar)-new Date(p.mrs))/86400000)+' hari':'-';return'<div class="rw-card '+sc+'" onclick="viewHistDetail('+i+')"><div class="rw-top"><div class="rw-name">'+p.nama+' <span style="font-size:11px;color:#aaa">'+p.rm+'</span></div><span class="rw-badge '+bc+'">'+ic+' '+p.status_keluar+'</span></div><div class="rw-meta">🛏️ Bed '+p.bed+' | 🔬 '+p.dx+' | 👨‍⚕️ '+(p.dpjp||'-')+' | 💳 '+p.bayar+'<br>📅 MRS: '+mrs+' | 📤 Keluar: '+keluar+' | ⏱️ LOS: '+los+(p.catatan_keluar?'<br>📝 '+p.catatan_keluar:'')+'</div></div>';}).join('');}
+function viewHistDetail(idx){const q=(document.getElementById('srchQ').value||'').toLowerCase();const fs=document.getElementById('srchStatus').value;const fd=document.getElementById('srchTgl').value;const list=S.history.filter(p=>{const mq=!q||(p.nama||'').toLowerCase().includes(q)||(p.rm||'').toLowerCase().includes(q)||(p.dx||'').toLowerCase().includes(q);const mf=!fs||p.status_keluar===fs;const md=!fd||p.tgl_keluar===fd;return mq&&mf&&md;});const p=list[idx];if(!p)return;S.viewHist=p;const mrs=p.mrs?new Date(p.mrs).toLocaleDateString('id-ID'):'-';const keluar=p.tgl_keluar?new Date(p.tgl_keluar).toLocaleDateString('id-ID'):'-';const age=p.lahir?Math.floor((new Date()-new Date(p.lahir))/31557600000)+' tahun':'-';document.getElementById('mRiwayatBody').innerHTML=infoRow('Nama',p.nama)+infoRow('No. RM',p.rm)+infoRow('Usia/JK',age+' / '+p.jk)+infoRow('Alamat',p.alamat||'-')+infoRow('Bed',p.bed)+infoRow('Diagnosa',p.dx)+infoRow('DPJP',p.dpjp||'-')+infoRow('MRS',mrs)+infoRow('Keluar',keluar)+infoRow('LOS',p.mrs&&p.tgl_keluar?Math.floor((new Date(p.tgl_keluar)-new Date(p.mrs))/86400000)+' hari':'-')+infoRow('Pembayaran',p.bayar)+infoRow('Status Keluar',p.status_keluar)+(p.catatan_keluar?infoRow('Catatan Keluar',p.catatan_keluar):'')+(p.soap?'<div class="section-sep">Catatan SOAP</div><div style="font-size:12px;white-space:pre-wrap;background:#fafafa;padding:10px;border-radius:8px">'+p.soap+'</div>':'');showM('mRiwayat');}
+function readmitPatient(){const p=S.viewHist;if(!p)return;let emptyBed=null;for(let i=1;i<=TOTAL;i++){if(!S.beds[i]){emptyBed=i;break;}}if(!emptyBed){toast('Tidak ada bed kosong!','error');return;}closeM('mRiwayat');S.editBed=emptyBed;document.getElementById('mPatientTitle').textContent='Rawat Inap Lagi - Bed '+emptyBed;clearForm();document.getElementById('fp_bed').value=emptyBed;setF('fp_rm',p.rm);setF('fp_nama',p.nama);setF('fp_lahir',p.lahir);setF('fp_jk',p.jk);setF('fp_gol',p.gol||'');setF('fp_alamat',p.alamat);setF('fp_telp',p.telp);setF('fp_bayar',p.bayar);setF('fp_mrs',today());setF('fp_jam',nowTime());setF('fp_shift',S.shift);setF('fp_dx',p.dx);setF('fp_dpjp',p.dpjp);setF('fp_alergi',p.alergi);showM('mPatient');goTab('dashboard');}
+function renderLaporan(){const pts=Object.values(S.beds).filter(Boolean);const isi=pts.length,kosong=TOTAL-isi,bor=TOTAL>0?Math.round(isi/TOTAL*100):0;const hist=S.history;const sc={};hist.forEach(p=>{sc[p.status_keluar]=(sc[p.status_keluar]||0)+1;});const bs={};pts.forEach(p=>{bs[p.bayar]=(bs[p.bayar]||0)+1;});const ks={};pts.forEach(p=>{ks[p.kondisi]=(ks[p.kondisi]||0)+1;});const sc2={'Sembuh/Pulang':'var(--green)','APS':'var(--orange)','Meninggal':'var(--red)','Pindah Ruang':'var(--purple)','Rujuk':'var(--teal)'};document.getElementById('laporanContent').innerHTML='<div class="stats" style="margin-bottom:14px"><div class="stat s-total"><div class="v">'+TOTAL+'</div><div class="l">Kapasitas</div></div><div class="stat s-isi"><div class="v">'+isi+'</div><div class="l">Terisi</div></div><div class="stat s-kosong"><div class="v">'+kosong+'</div><div class="l">Kosong</div></div><div class="stat s-bor"><div class="v">'+bor+'%</div><div class="l">BOR</div></div><div class="stat s-hist"><div class="v">'+hist.length+'</div><div class="l">Riwayat</div></div></div><div class="lap-grid"><div class="lap-card"><h4>Status Keluar</h4>'+['Sembuh/Pulang','APS','Meninggal','Pindah Ruang','Rujuk'].map(s=>{const n=sc[s]||0,pct=hist.length?Math.round(n/hist.length*100):0;return'<div class="chart-bar-item"><div class="chart-bar-label"><span>'+s+'</span><span><b>'+n+'</b> ('+pct+'%)</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:'+pct+'%;background:'+sc2[s]+'"></div></div></div>';}).join('')+'</div><div class="lap-card"><h4>Pembayaran (Aktif)</h4>'+['BPJS','Umum','Asuransi Swasta','Gratis'].map(b=>{const n=bs[b]||0,pct=isi?Math.round(n/isi*100):0;return'<div class="chart-bar-item"><div class="chart-bar-label"><span>'+b+'</span><span><b>'+n+'</b> ('+pct+'%)</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:'+pct+'%;background:var(--blue2)"></div></div></div>';}).join('')+'</div><div class="lap-card"><h4>Kondisi Pasien</h4>'+['Stabil','Membaik','Observasi','Kritis'].map((k,i)=>{const n=ks[k]||0,pct=isi?Math.round(n/isi*100):0;const c=['var(--green)','var(--blue2)','var(--orange)','var(--red)'][i];return'<div class="chart-bar-item"><div class="chart-bar-label"><span>'+k+'</span><span><b>'+n+'</b> ('+pct+'%)</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:'+pct+'%;background:'+c+'"></div></div></div>';}).join('')+'</div></div><div class="lap-card"><h4>Info Ruangan - '+new Date().toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</h4><div class="lap-row"><span>Ruangan</span><span class="lap-val">'+S.room+'</span></div><div class="lap-row"><span>Shift Aktif</span><span class="lap-val">'+S.shift+'</span></div><div class="lap-row"><span>Bed Terisi</span><span class="lap-val">'+isi+' / '+TOTAL+'</span></div><div class="lap-row"><span>BOR</span><span class="lap-val">'+bor+'%</span></div><div class="lap-row"><span>Perawat Pagi</span><span class="lap-val">'+(S.settings.np_pagi||'-')+'</span></div><div class="lap-row"><span>Perawat Siang</span><span class="lap-val">'+(S.settings.np_siang||'-')+'</span></div><div class="lap-row"><span>Perawat Malam</span><span class="lap-val">'+(S.settings.np_malam||'-')+'</span></div><div class="lap-row"><span>Kepala Ruang</span><span class="lap-val">'+(S.settings.np_kaur||'-')+'</span></div></div>';}
+function loadSettings(){setF('gasUrl',S.settings.gasUrl);setF('sheetId',S.settings.sheetId);setF('np_pagi',S.settings.np_pagi);setF('np_siang',S.settings.np_siang);setF('np_malam',S.settings.np_malam);setF('np_kaur',S.settings.np_kaur);}
+function saveSettings(){S.settings.gasUrl=gF('gasUrl');S.settings.sheetId=gF('sheetId');persist();applySettings();toast('Pengaturan tersimpan','success');}
+function saveNurseSettings(){S.settings.np_pagi=gF('np_pagi');S.settings.np_siang=gF('np_siang');S.settings.np_malam=gF('np_malam');S.settings.np_kaur=gF('np_kaur');persist();toast('Data perawat tersimpan','success');}
+function applySettings(){const sd=document.getElementById('syncDot');const st=document.getElementById('syncText');if(S.settings.gasUrl){sd.className='sync-dot';st.textContent='Google Sheets aktif - Sinkronisasi otomatis';}else{sd.className='sync-dot';st.textContent='Data tersimpan lokal - Buka Pengaturan untuk sinkronisasi Google Sheets';}}
+function testSync(){const url=gF('gasUrl');if(!url){toast('Masukkan URL Google Apps Script dulu!','error');return;}document.getElementById('syncDot').className='sync-dot syncing';document.getElementById('syncText').textContent='Menguji koneksi...';fetch(url+'?action=ping&room='+encodeURIComponent(S.room)).then(r=>r.text()).then(()=>{document.getElementById('syncDot').className='sync-dot';document.getElementById('syncText').textContent='Koneksi berhasil!';toast('Koneksi ke Google Sheets berhasil!','success');}).catch(()=>{document.getElementById('syncDot').className='sync-dot error';document.getElementById('syncText').textContent='Gagal terhubung. Periksa URL.';toast('Gagal terhubung ke Google Sheets','error');});}
+function syncToSheets(action,data){if(!S.settings.gasUrl)return;document.getElementById('syncDot').className='sync-dot syncing';fetch(S.settings.gasUrl,{method:'POST',body:JSON.stringify({action,room:S.room,data}),headers:{'Content-Type':'text/plain'}}).then(()=>{document.getElementById('syncDot').className='sync-dot';document.getElementById('syncText').textContent='Tersinkronisasi: '+new Date().toLocaleTimeString('id-ID');}).catch(()=>{document.getElementById('syncDot').className='sync-dot error';document.getElementById('syncText').textContent='Gagal sinkronisasi - data tersimpan lokal';});}
+function clearAllData(){if(confirm('PERHATIAN! Semua data akan dihapus permanen.
+
+Lanjutkan?')){S.beds={};S.history=[];S.notifs=[];persist();renderDashboard();toast('Semua data telah dihapus','info');}}
+function addNotif(title,msg){S.notifs.unshift({title,msg,time:new Date().toLocaleTimeString('id-ID'),ts:Date.now()});if(S.notifs.length>50)S.notifs=S.notifs.slice(0,50);updateNotifBadge();persist();}
+function updateNotifBadge(){const n=S.notifs.length;const el=document.getElementById('notifCount');el.textContent=n>9?'9+':n;el.classList.toggle('hidden',n===0);}
+function toggleNotif(){const p=document.getElementById('notifPanel');p.classList.toggle('hidden');if(!p.classList.contains('hidden'))renderNotifPanel();}
+function renderNotifPanel(){if(!S.notifs.length){document.getElementById('notifList').innerHTML='<div class="empty" style="padding:20px"><div class="e-icon" style="font-size:30px">🔔</div><p>Tidak ada notifikasi</p></div>';return;}document.getElementById('notifList').innerHTML=S.notifs.map(n=>'<div class="notif-item"><div class="ni-icon">🔔</div><div><div class="ni-text"><b>'+n.title+'</b><br>'+n.msg+'</div><div class="ni-time">'+n.time+'</div></div></div>').join('');}
+function clearNotif(){S.notifs=[];persist();updateNotifBadge();renderNotifPanel();}
+document.addEventListener('click',e=>{const np=document.getElementById('notifPanel');const nb=document.getElementById('notifBtn');if(!np.classList.contains('hidden')&&!np.contains(e.target)&&!nb.contains(e.target))np.classList.add('hidden');});
+function showM(id){document.getElementById(id).classList.remove('hidden')}
+function closeM(id){document.getElementById(id).classList.add('hidden')}
+document.querySelectorAll('.overlay').forEach(o=>{o.addEventListener('click',e=>{if(e.target===o)o.classList.add('hidden');});});
+let tTimer;
+function toast(msg,type='success'){const el=document.getElementById('toast');el.textContent=msg;el.className='show '+type;clearTimeout(tTimer);tTimer=setTimeout(()=>el.className='',3000);}
+function gF(id){return(document.getElementById(id)||{}).value||'';}
+function setF(id,v){const el=document.getElementById(id);if(el)el.value=v||'';}
+function today(){return new Date().toISOString().split('T')[0];}
+function nowTime(){return new Date().toTimeString().slice(0,5);}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')['mPatient','mInfo','mOutcome','mRiwayat'].forEach(id=>document.getElementById(id).classList.add('hidden'));});
+document.getElementById('lp').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.getElementById('lu').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('lp').focus();});
+</script>
+</body>
+</html>
